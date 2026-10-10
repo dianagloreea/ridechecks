@@ -101,7 +101,7 @@ export async function POST(req: NextRequest) {
             <tr style="background:#f8fafc;"><td style="padding:10px 16px;color:#64748b;border-bottom:1px solid #e5e7eb;">Package</td><td style="padding:10px 16px;border-bottom:1px solid #e5e7eb;">${package_name} — $${package_price}</td></tr>
             <tr><td style="padding:10px 16px;color:#64748b;">Order ID</td><td style="padding:10px 16px;font-size:11px;color:#94a3b8;font-family:monospace;">${order.id}</td></tr>
           </table>
-          <a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin" style="display:inline-block;margin-top:20px;background:#c4953a;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">View in Admin Portal →</a>
+          <a href="https://ridechecks.us/admin" style="display:inline-block;margin-top:20px;background:#c4953a;color:white;padding:12px 24px;border-radius:8px;text-decoration:none;font-weight:700;font-size:14px;">View in Admin Portal →</a>
         </div>
       `,
     })
