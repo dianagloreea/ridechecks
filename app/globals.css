@@ -1,5 +1,9 @@
 @import "tailwindcss";
 
+/* Hide Netlify badge */
+[data-netlify-badge], .netlify-badge, a[href*="netlify.com"][style*="position:fixed"],
+div[style*="position: fixed"][style*="bottom"] a[href*="netlify"] { display: none !important; }
+
 @source "../app/**/*.{js,ts,jsx,tsx}";
 @source "../components/**/*.{js,ts,jsx,tsx}";
 @source "../lib/**/*.{js,ts,jsx,tsx}";
