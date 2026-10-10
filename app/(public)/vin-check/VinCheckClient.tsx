@@ -238,7 +238,7 @@ function VinCheckInner() {
   const handleVinSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     const trimmed = vin.trim().toUpperCase()
-    if (!trimmed) return
+    if (trimmed.length !== 17) return
     setSubmittedVin(trimmed)
     setSelectedPkg(null)
     setStep('packages')
@@ -284,19 +284,32 @@ function VinCheckInner() {
           <p className="text-slate-500 dark:text-slate-400 text-base max-w-lg mx-auto mb-10">
             Enter a vehicle's 17-character VIN to explore available vehicle history, specifications, and other important records.
           </p>
-          <form onSubmit={handleVinSubmit} className="flex flex-col sm:flex-row gap-2 max-w-xl mx-auto">
-            <input
-              type="text"
-              placeholder="Enter VIN number (e.g. 1HGBH41JXMN109186)"
-              value={vin}
-              onChange={e => setVin(e.target.value)}
-              maxLength={17}
-              className="flex-1 px-4 py-3 text-sm rounded-lg bg-white dark:bg-white/5 border border-slate-200 dark:border-white/20 text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:ring-[#c4953a]/50 focus:border-[#c4953a]"
-            />
-            <button type="submit" className="bg-[#c4953a] hover:bg-[#b8872e] text-white font-bold text-sm px-8 py-3 rounded-lg transition-colors">
-              Check VIN
-            </button>
-          </form>
+          <div className="max-w-xl mx-auto">
+            <form onSubmit={handleVinSubmit} className="flex flex-col sm:flex-row gap-2">
+              <input
+                type="text"
+                placeholder="Enter VIN number (e.g. 1HGBH41JXMN109186)"
+                value={vin}
+                onChange={e => setVin(e.target.value.toUpperCase())}
+                maxLength={17}
+                className={`flex-1 px-4 py-3 text-sm rounded-lg bg-white dark:bg-white/5 border text-slate-900 dark:text-white placeholder:text-slate-400 dark:placeholder:text-slate-500 outline-none focus:ring-2 focus:border-[#c4953a] ${
+                  vin.trim().length > 0 && vin.trim().length < 17
+                    ? 'border-red-400 focus:ring-red-200'
+                    : 'border-slate-200 dark:border-white/20 focus:ring-[#c4953a]/50'
+                }`}
+              />
+              <button
+                type="submit"
+                disabled={vin.trim().length !== 17}
+                className="bg-[#c4953a] hover:bg-[#b8872e] disabled:opacity-50 disabled:cursor-not-allowed text-white font-bold text-sm px-8 py-3 rounded-lg transition-colors"
+              >
+                Check VIN
+              </button>
+            </form>
+            {vin.trim().length > 0 && vin.trim().length < 17 && (
+              <p className="text-xs text-red-400 mt-1.5 text-left">VIN must be exactly 17 characters ({vin.trim().length}/17)</p>
+            )}
+          </div>
         </div>
       </section>
 
