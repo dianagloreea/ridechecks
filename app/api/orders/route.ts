@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
 
     // Confirmation email to customer
     await resend.emails.send({
-      from: 'RideChecks <onboarding@resend.dev>',
+      from: 'RideChecks <noreply@ridechecks.us>',
       to: email,
       subject: `Your RideChecks Order Confirmation — ${package_name} Report`,
       html: `
@@ -87,7 +87,7 @@ export async function POST(req: NextRequest) {
 
     // Notification email to admin
     await resend.emails.send({
-      from: 'RideChecks <onboarding@resend.dev>',
+      from: 'RideChecks <noreply@ridechecks.us>',
       to: process.env.ADMIN_EMAIL!,
       subject: `New Order — ${package_name} — VIN: ${vin.trim().toUpperCase()}`,
       html: `

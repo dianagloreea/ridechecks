@@ -25,7 +25,7 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
     if (!order.report_url) return NextResponse.json({ error: 'No report file uploaded yet' }, { status: 400 })
 
     await resend.emails.send({
-      from: 'RideChecks <onboarding@resend.dev>',
+      from: 'RideChecks <noreply@ridechecks.us>',
       to: order.email,
       subject: `Your ${order.package_name} Vehicle History Report is Ready — RideChecks`,
       html: `
