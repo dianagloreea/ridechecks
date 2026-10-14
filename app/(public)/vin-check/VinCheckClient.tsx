@@ -1,9 +1,10 @@
 'use client'
 import { useState, useEffect, Suspense } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { Check, MapPin, Car, Key, ArrowRight, ShieldCheck, Lock, CreditCard, Loader2, CheckCircle } from 'lucide-react'
+import { Check, MapPin, Car, Key, ArrowRight, ShieldCheck, Lock, Loader2, CheckCircle } from 'lucide-react'
 import { PACKAGES } from '@/lib/types'
 import FaqSection from '@/components/FaqSection'
+import PayPalButton from '@/components/PayPalButton'
 import toast from 'react-hot-toast'
 
 type Step = 'vin' | 'packages' | 'payment' | 'details' | 'success'
@@ -24,19 +25,7 @@ const VIN_ANATOMY = [
   { chars: '12–17', label: 'Serial number', desc: 'Unique production sequence' },
 ]
 
-function MockPaymentForm({ pkg, onSuccess }: { pkg: typeof PACKAGES[0], onSuccess: () => void }) {
-  const [loading, setLoading] = useState(false)
-
-  const handlePay = (e: React.FormEvent) => {
-    e.preventDefault()
-    setLoading(true)
-    setTimeout(() => {
-      setLoading(false)
-      toast.success('Payment confirmed!')
-      onSuccess()
-    }, 1800)
-  }
-
+function PaymentStep({ pkg, onSuccess }: { pkg: typeof PACKAGES[0], onSuccess: () => void }) {
   return (
     <div className="max-w-md mx-auto bg-white dark:bg-[#0e1628] border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
       <div className="flex items-center gap-2 mb-5">
@@ -54,64 +43,15 @@ function MockPaymentForm({ pkg, onSuccess }: { pkg: typeof PACKAGES[0], onSucces
         </div>
       </div>
 
-      <form onSubmit={handlePay} className="space-y-4">
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Card Number</label>
-          <div className="relative">
-            <input
-              type="text"
-              defaultValue="4242 4242 4242 4242"
-              maxLength={19}
-              className="w-full border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm outline-none bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c4953a]/30 focus:border-[#c4953a] pr-10"
-            />
-            <CreditCard size={16} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400" />
-          </div>
-        </div>
-        <div className="grid grid-cols-2 gap-3">
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Expiry</label>
-            <input
-              type="text"
-              defaultValue="12/28"
-              maxLength={5}
-              className="w-full border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm outline-none bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c4953a]/30 focus:border-[#c4953a]"
-            />
-          </div>
-          <div>
-            <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">CVC</label>
-            <input
-              type="text"
-              defaultValue="123"
-              maxLength={4}
-              className="w-full border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm outline-none bg-white dark:bg-white/5 text-slate-900 dark:text-white focus:ring-2 focus:ring-[#c4953a]/30 focus:border-[#c4953a]"
-            />
-          </div>
-        </div>
-        <div>
-          <label className="block text-xs font-semibold text-slate-700 dark:text-slate-300 mb-1">Name on Card</label>
-          <input
-            type="text"
-            placeholder="John Smith"
-            className="w-full border border-slate-200 dark:border-white/10 rounded-lg px-3 py-2.5 text-sm outline-none bg-white dark:bg-white/5 text-slate-900 dark:text-white placeholder:text-slate-400 focus:ring-2 focus:ring-[#c4953a]/30 focus:border-[#c4953a]"
-          />
-        </div>
-
-        <button
-          type="submit"
-          disabled={loading}
-          className="w-full bg-[#c4953a] hover:bg-[#b8872e] disabled:opacity-70 text-white font-bold py-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
-        >
-          {loading ? (
-            <><Loader2 size={16} className="animate-spin" /> Processing payment...</>
-          ) : (
-            <><Lock size={14} /> Pay ${pkg.price} — Get Report</>
-          )}
-        </button>
-        <p className="text-xs text-center text-slate-400">
-          <ShieldCheck size={11} className="inline mr-1" />
-          Your payment is protected. 30-day refund policy applies.
-        </p>
-      </form>
+      <PayPalButton
+        amount={pkg.price}
+        packageName={pkg.name}
+        onSuccess={() => {
+          toast.success('Payment confirmed!')
+          onSuccess()
+        }}
+        onError={() => toast.error('Payment failed. Please try again.')}
+      />
     </div>
   )
 }
@@ -423,7 +363,7 @@ function VinCheckInner() {
           )}
 
           {step === 'payment' && (
-            <MockPaymentForm pkg={pkg} onSuccess={handlePaymentSuccess} />
+            <PaymentStep pkg={pkg} onSuccess={handlePaymentSuccess} />
           )}
 
           {step === 'details' && (
