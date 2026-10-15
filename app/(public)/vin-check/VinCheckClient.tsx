@@ -341,21 +341,21 @@ function VinCheckInner() {
       {(step === 'payment' || step === 'details' || step === 'success') && pkg && (
         <section id="checkout-section" className="max-w-6xl mx-auto px-4 pb-20">
           {step !== 'success' && (
-            <div className="flex items-center justify-center gap-0 mb-8 max-w-md mx-auto">
+            <div className="flex items-start justify-center mb-8 w-full max-w-lg mx-auto">
               {STEPS.map((s, idx) => (
-                <div key={s.key} className="flex items-center">
-                  <div className={`flex flex-col items-center ${idx > 0 ? 'ml-0' : ''}`}>
-                    <div className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors ${
+                <div key={s.key} className="flex items-start flex-1">
+                  <div className="flex flex-col items-center flex-1">
+                    <div className={`w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold border-2 transition-colors ${
                       idx < currentStepIdx ? 'bg-[#c4953a] border-[#c4953a] text-white' :
                       idx === currentStepIdx ? 'bg-white dark:bg-[#0e1628] border-[#c4953a] text-[#c4953a]' :
                       'bg-white dark:bg-[#0e1628] border-slate-200 dark:border-white/20 text-slate-400'
                     }`}>
                       {idx < currentStepIdx ? <Check size={13} /> : idx + 1}
                     </div>
-                    <span className={`text-xs mt-1 font-medium hidden sm:block ${idx === currentStepIdx ? 'text-[#c4953a]' : 'text-slate-400'}`}>{s.label}</span>
+                    <span className={`text-xs mt-1.5 font-medium text-center leading-tight hidden sm:block ${idx === currentStepIdx ? 'text-[#c4953a]' : 'text-slate-400'}`}>{s.label}</span>
                   </div>
                   {idx < STEPS.length - 1 && (
-                    <div className={`h-0.5 w-8 sm:w-16 mx-1 transition-colors ${idx < currentStepIdx ? 'bg-[#c4953a]' : 'bg-slate-200 dark:bg-white/10'}`} />
+                    <div className={`h-0.5 w-full mt-4 transition-colors ${idx < currentStepIdx ? 'bg-[#c4953a]' : 'bg-slate-200 dark:bg-white/10'}`} />
                   )}
                 </div>
               ))}

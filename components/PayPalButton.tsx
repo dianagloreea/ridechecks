@@ -1,5 +1,5 @@
 'use client'
-import { PayPalScriptProvider, PayPalButtons } from '@paypal/react-paypal-js'
+import { PayPalScriptProvider, PayPalButtons, FUNDING } from '@paypal/react-paypal-js'
 import { ShieldCheck } from 'lucide-react'
 
 interface Props {
@@ -28,7 +28,8 @@ export default function PayPalButton({ amount, packageName, onSuccess, onError }
     }}>
       <div className="space-y-3">
         <PayPalButtons
-          style={{ layout: 'vertical', color: 'gold', shape: 'rect', label: 'pay', height: 48 }}
+          style={{ layout: 'vertical', shape: 'rect', height: 48 }}
+          fundingSource={FUNDING.CARD}
           createOrder={(_data, actions) => {
             return actions.order.create({
               intent: 'CAPTURE',
