@@ -31,10 +31,8 @@ export async function POST(_req: NextRequest, { params }: { params: Promise<{ id
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:0 auto;padding:0;background:#ffffff;">
           <div style="background:#080c18;padding:24px 32px;border-radius:12px 12px 0 0;">
-            <div style="display:flex;align-items:center;gap:10px;">
-              <div style="width:32px;height:32px;background:#c4953a;border-radius:8px;display:flex;align-items:center;justify-content:center;">
-                <span style="color:white;font-weight:900;font-size:14px;">R</span>
-              </div>
+            <div style="display:flex;align-items:center;gap:8px;">
+              <img src="https://ridechecks.us/logo.png" alt="RideChecks" width="36" height="36" style="display:block;border-radius:4px;" />
               <span style="color:white;font-weight:700;font-size:18px;">Ride<span style="color:#c4953a;">Checks</span></span>
             </div>
           </div>
