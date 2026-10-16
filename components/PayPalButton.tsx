@@ -42,7 +42,6 @@ export default function PayPalButton({ amount, packageName, onSuccess, onError }
                   value: amount.toFixed(2),
                 },
                 description: `RideChecks ${packageName} Report`,
-                shipping_preference: 'NO_SHIPPING',
               }],
             })
           }}
