@@ -1,5 +1,17 @@
+import type { Metadata } from 'next'
 import FaqSection from '@/components/FaqSection'
 import { Shield, BarChart2, Car, AlertCircle } from 'lucide-react'
+
+export const metadata: Metadata = {
+  title: 'How It Works — Vehicle History Reports Explained',
+  description: 'Learn how RideChecks generates vehicle history reports from NMVTIS, NHTSA, insurance records, and 50-state DMV data. Understand what a VIN check reveals.',
+  alternates: { canonical: 'https://ridechecks.us/how-it-works' },
+  openGraph: {
+    title: 'How RideChecks Vehicle History Reports Work',
+    description: 'We pull data from NMVTIS, NHTSA, insurance records, and 50-state DMV databases to give you the most complete vehicle history available.',
+    url: 'https://ridechecks.us/how-it-works',
+  },
+}
 
 const DATA_SOURCES = [
   { icon: AlertCircle, title: 'Insurance & claims', desc: 'Total-loss and damage claim records reported by carriers.' },

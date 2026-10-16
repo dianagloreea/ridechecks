@@ -1,7 +1,19 @@
+import type { Metadata } from 'next'
 import Link from 'next/link'
 import { Check, Shield, Clock, Star } from 'lucide-react'
 import { PACKAGES } from '@/lib/types'
 import FaqSection from '@/components/FaqSection'
+
+export const metadata: Metadata = {
+  title: 'Pricing — Vehicle History Report Plans Starting at $29.99',
+  description: 'Choose a RideChecks vehicle history report plan. Standard, Professional, and Instant reports with full accident history, title checks, odometer records and more.',
+  alternates: { canonical: 'https://ridechecks.us/pricing' },
+  openGraph: {
+    title: 'Vehicle History Report Pricing — RideChecks',
+    description: 'Vehicle history reports starting at $29.99. Get accident records, title issues, odometer fraud detection, and recall information.',
+    url: 'https://ridechecks.us/pricing',
+  },
+}
 
 const REPORT_CONTENTS = [
   'VIN lookups', 'Odometer rollback alert', '70+ data points', 'Insurance total loss',
