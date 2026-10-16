@@ -53,13 +53,13 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: '/logo.png', sizes: '32x32', type: 'image/png' },
-      { url: '/logo.png', sizes: '64x64', type: 'image/png' },
-      { url: '/logo.png', sizes: '192x192', type: 'image/png' },
-      { url: '/logo.png', sizes: '512x512', type: 'image/png' },
+      { url: '/favicon-icon.ico', sizes: '32x32', type: 'image/x-icon' },
+      { url: '/favicon-icon.ico', sizes: '64x64', type: 'image/x-icon' },
+      { url: '/favicon-icon.ico', sizes: '128x128', type: 'image/x-icon' },
+      { url: '/favicon-icon.ico', sizes: '256x256', type: 'image/x-icon' },
     ],
-    apple: [{ url: '/logo.png', sizes: '180x180', type: 'image/png' }],
-    shortcut: '/logo.png',
+    apple: [{ url: '/favicon-icon.ico', sizes: '180x180' }],
+    shortcut: '/favicon-icon.ico',
   },
   alternates: {
     canonical: BASE_URL,
