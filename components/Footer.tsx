@@ -19,7 +19,8 @@ export default function Footer() {
           <p className="text-sm leading-relaxed max-w-xs text-slate-400">
             Professional vehicle history reporting platform. Get transparent insights and make informed decisions with our comprehensive VIN lookup service.
           </p>
-          <p className="text-xs mt-4 text-slate-500">support@ridechecks.com</p>
+          <p className="text-xs mt-4 text-slate-500">support@ridechecks.us</p>
+          <p className="text-xs mt-1 text-slate-500">30 N Gould St, Sheridan, WY 82801, USA</p>
         </div>
 
         <div>
@@ -29,6 +30,8 @@ export default function Footer() {
             <li><Link href="/vin-check" className="hover:text-[#c4953a] transition-colors">VIN Check</Link></li>
             <li><Link href="/how-it-works" className="hover:text-[#c4953a] transition-colors">How it works</Link></li>
             <li><Link href="/pricing" className="hover:text-[#c4953a] transition-colors">Pricing</Link></li>
+            <li><Link href="/about" className="hover:text-[#c4953a] transition-colors">About Us</Link></li>
+            <li><Link href="/contact" className="hover:text-[#c4953a] transition-colors">Contact</Link></li>
           </ul>
         </div>
 

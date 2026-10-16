@@ -29,6 +29,8 @@ export default function Navbar() {
           <Link href="/vin-check" className="text-sm text-slate-600 dark:text-slate-300 hover:text-[#c4953a] dark:hover:text-[#c4953a] transition-colors">VIN Check</Link>
           <Link href="/how-it-works" className="text-sm text-slate-600 dark:text-slate-300 hover:text-[#c4953a] dark:hover:text-[#c4953a] transition-colors">How it works</Link>
           <Link href="/pricing" className="text-sm text-slate-600 dark:text-slate-300 hover:text-[#c4953a] dark:hover:text-[#c4953a] transition-colors">Pricing</Link>
+          <Link href="/about" className="text-sm text-slate-600 dark:text-slate-300 hover:text-[#c4953a] dark:hover:text-[#c4953a] transition-colors">About</Link>
+          <Link href="/contact" className="text-sm text-slate-600 dark:text-slate-300 hover:text-[#c4953a] dark:hover:text-[#c4953a] transition-colors">Contact</Link>
         </nav>
 
         <div className="hidden md:flex items-center gap-2">
@@ -55,6 +57,8 @@ export default function Navbar() {
           <Link href="/vin-check" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>VIN Check</Link>
           <Link href="/how-it-works" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>How it works</Link>
           <Link href="/pricing" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>Pricing</Link>
+          <Link href="/about" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>About</Link>
+          <Link href="/contact" className="text-sm text-slate-700 dark:text-slate-300" onClick={() => setOpen(false)}>Contact</Link>
           <Link href="/vin-check" className="bg-[#c4953a] text-white text-sm font-bold px-4 py-2 rounded-lg text-center" onClick={() => setOpen(false)}>Get Report</Link>
         </div>
       )}
