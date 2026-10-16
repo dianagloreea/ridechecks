@@ -6,9 +6,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: '*',
         allow: '/',
+        disallow: ['/admin/', '/api/', '/_next/'],
+      },
+      {
+        userAgent: 'Googlebot',
+        allow: '/',
         disallow: ['/admin/', '/api/'],
       },
     ],
     sitemap: 'https://ridechecks.us/sitemap.xml',
+    host: 'https://ridechecks.us',
   }
 }

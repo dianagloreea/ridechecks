@@ -1,8 +1,21 @@
 import { Mail, Clock, MapPin, MessageCircle } from 'lucide-react'
 
-export const metadata = {
-  title: 'Contact Us — RideChecks',
-  description: 'Contact RideChecks support for questions about your vehicle history report order. We respond within 2 hours.',
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Contact RideChecks — Vehicle History Report Support | 2-Hour Response',
+  description: 'Contact RideChecks support for questions about your vehicle history report, refund requests, or order issues. Email us at support@ridechecks.us — we respond within 2 hours, 7 days a week.',
+  keywords: [
+    'contact RideChecks', 'vehicle history report support', 'VIN check help',
+    'RideChecks customer service', 'report order help', 'ridechecks support email',
+  ],
+  alternates: { canonical: 'https://ridechecks.us/contact' },
+  openGraph: {
+    title: 'Contact RideChecks Support — 2-Hour Response Guaranteed',
+    description: 'Questions about your vehicle history report? Email support@ridechecks.us and we\'ll respond within 2 hours, 7 days a week.',
+    url: 'https://ridechecks.us/contact',
+    images: [{ url: 'https://ridechecks.us/og-image.png', width: 1200, height: 630 }],
+  },
 }
 
 const CONTACT_ITEMS = [

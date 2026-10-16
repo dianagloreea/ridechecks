@@ -3,13 +3,24 @@ import FaqSection from '@/components/FaqSection'
 import { Shield, BarChart2, Car, AlertCircle } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'How It Works — Vehicle History Reports Explained',
-  description: 'Learn how RideChecks generates vehicle history reports from NMVTIS, NHTSA, insurance records, and 50-state DMV data. Understand what a VIN check reveals.',
+  title: 'How It Works — How We Run Your VIN Check & Vehicle History Report',
+  description: 'Learn how RideChecks generates vehicle history reports using NMVTIS, NHTSA, insurance records, and all 50-state DMV data. Enter a VIN, pick a plan, receive your report in minutes.',
+  keywords: [
+    'how does VIN check work', 'how vehicle history report works', 'NMVTIS vehicle report',
+    'what does VIN check show', 'VIN check explained', 'car history report explained',
+    'DMV vehicle records', 'NHTSA recall data', 'vehicle history data sources',
+  ],
   alternates: { canonical: 'https://ridechecks.us/how-it-works' },
   openGraph: {
-    title: 'How RideChecks Vehicle History Reports Work',
-    description: 'We pull data from NMVTIS, NHTSA, insurance records, and 50-state DMV databases to give you the most complete vehicle history available.',
+    title: 'How RideChecks VIN Checks & Vehicle History Reports Work',
+    description: 'We pull data from NMVTIS, NHTSA, insurance records, and all 50-state DMV databases to give you the most complete vehicle history available.',
     url: 'https://ridechecks.us/how-it-works',
+    images: [{ url: 'https://ridechecks.us/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'How RideChecks VIN Checks Work',
+    description: 'NMVTIS, NHTSA, insurance records & 50-state DMV data — all in one report.',
   },
 }
 
@@ -20,9 +31,24 @@ const DATA_SOURCES = [
   { icon: BarChart2, title: 'Manufacturer & safety', desc: 'Recall campaigns, build data and published safety ratings.' },
 ]
 
+const howToSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'HowTo',
+  name: 'How to Run a VIN Check & Get a Vehicle History Report',
+  description: 'Check any used car\'s history in 3 simple steps using RideChecks.',
+  totalTime: 'PT5M',
+  supply: [{ '@type': 'HowToSupply', name: 'Vehicle VIN number (17 characters)' }],
+  step: [
+    { '@type': 'HowToStep', position: 1, name: 'Enter the VIN', text: 'Type or paste the 17-character VIN from the windshield, doorframe, or registration into the search bar at ridechecks.us/vin-check.' },
+    { '@type': 'HowToStep', position: 2, name: 'Select your report plan', text: 'Choose Standard ($29.99), Professional ($44.99), or Instant ($59.99) based on the level of detail you need.' },
+    { '@type': 'HowToStep', position: 3, name: 'Receive your vehicle history report', text: 'Your completed report is delivered to your email, typically within 30 minutes to 24 hours depending on the plan.' },
+  ],
+}
+
 export default function HowItWorksPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(howToSchema) }} />
       <section className="bg-[#faf8f4] dark:bg-[#080c18] text-slate-900 dark:text-white py-20 text-center px-4">
         <p className="text-xs font-bold tracking-widest text-[#c4953a] uppercase mb-2">HOW IT WORKS</p>
         <h1 className="text-3xl md:text-5xl font-bold mb-4">Three simple steps to check a vehicle.</h1>

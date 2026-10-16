@@ -5,14 +5,71 @@ import { PACKAGES } from '@/lib/types'
 import FaqSection from '@/components/FaqSection'
 
 export const metadata: Metadata = {
-  title: 'Pricing — Vehicle History Report Plans Starting at $29.99',
-  description: 'Choose a RideChecks vehicle history report plan. Standard, Professional, and Instant reports with full accident history, title checks, odometer records and more.',
+  title: 'Pricing — Vehicle History Reports Starting at $29.99 | RideChecks',
+  description: 'Vehicle history reports starting at $29.99. Choose Standard, Professional, or Instant plans. Full accident history, title checks, odometer fraud detection, theft records & recalls. 30-day money-back guarantee.',
+  keywords: [
+    'vehicle history report price', 'VIN check cost', 'car history report pricing',
+    'cheap VIN check', 'affordable vehicle history', 'carfax price alternative',
+    'vehicle report $29', 'instant VIN report', 'buy vehicle history report',
+  ],
   alternates: { canonical: 'https://ridechecks.us/pricing' },
   openGraph: {
-    title: 'Vehicle History Report Pricing — RideChecks',
-    description: 'Vehicle history reports starting at $29.99. Get accident records, title issues, odometer fraud detection, and recall information.',
+    title: 'Vehicle History Report Pricing — Plans from $29.99 | RideChecks',
+    description: 'Vehicle history reports from $29.99. Accident records, title issues, odometer fraud detection, theft records & recalls. 30-day money-back guarantee.',
     url: 'https://ridechecks.us/pricing',
+    images: [{ url: 'https://ridechecks.us/og-image.png', width: 1200, height: 630 }],
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'Vehicle History Reports from $29.99 | RideChecks',
+    description: 'Full vehicle history reports starting at $29.99 with a 30-day money-back guarantee.',
+  },
+}
+
+const pricingSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: 'Vehicle History Report Plans',
+  description: 'RideChecks vehicle history report pricing plans',
+  url: 'https://ridechecks.us/pricing',
+  itemListElement: [
+    {
+      '@type': 'ListItem',
+      position: 1,
+      item: {
+        '@type': 'Product',
+        name: 'Standard Vehicle History Report',
+        description: 'Complete vehicle history report with accident records, title history, odometer check, and ownership history.',
+        url: 'https://ridechecks.us/pricing',
+        brand: { '@type': 'Brand', name: 'RideChecks' },
+        offers: { '@type': 'Offer', price: '29.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: 'https://ridechecks.us/vin-check' },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 2,
+      item: {
+        '@type': 'Product',
+        name: 'Professional Vehicle History Report',
+        description: 'Enhanced vehicle history report with all Standard features plus deeper data points and recall information.',
+        url: 'https://ridechecks.us/pricing',
+        brand: { '@type': 'Brand', name: 'RideChecks' },
+        offers: { '@type': 'Offer', price: '44.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: 'https://ridechecks.us/vin-check' },
+      },
+    },
+    {
+      '@type': 'ListItem',
+      position: 3,
+      item: {
+        '@type': 'Product',
+        name: 'Instant Vehicle History Report',
+        description: 'Priority vehicle history report with fastest delivery, all data points, and premium support.',
+        url: 'https://ridechecks.us/pricing',
+        brand: { '@type': 'Brand', name: 'RideChecks' },
+        offers: { '@type': 'Offer', price: '59.99', priceCurrency: 'USD', availability: 'https://schema.org/InStock', url: 'https://ridechecks.us/vin-check' },
+      },
+    },
+  ],
 }
 
 const REPORT_CONTENTS = [
@@ -32,6 +89,7 @@ const TRUST_BADGES = [
 export default function PricingPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(pricingSchema) }} />
       <section className="bg-[#faf8f4] dark:bg-[#080c18] text-slate-900 dark:text-white py-20 text-center px-4">
         <p className="text-xs font-bold tracking-widest text-[#c4953a] uppercase mb-2">PRICING</p>
         <h1 className="text-3xl md:text-5xl font-bold mb-4">Choose the report that fits your needs.</h1>

@@ -1,8 +1,21 @@
 import { Shield, Users, Clock, Award, Mail, MapPin, Phone } from 'lucide-react'
 
-export const metadata = {
-  title: 'About Us — RideChecks',
-  description: 'RideChecks is a US-based vehicle history report service helping buyers make confident used car purchases with detailed, accurate reports.',
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'About RideChecks — Trusted Vehicle History Report Service USA',
+  description: 'RideChecks is a US-based vehicle history report company helping buyers make confident used car decisions. 50,000+ reports delivered. NMVTIS-sourced data. Based in Sheridan, Wyoming.',
+  keywords: [
+    'about RideChecks', 'vehicle history report company', 'VIN check service USA',
+    'trusted car history report', 'US vehicle report service', 'who is RideChecks',
+  ],
+  alternates: { canonical: 'https://ridechecks.us/about' },
+  openGraph: {
+    title: 'About RideChecks — Trusted Vehicle History Reports USA',
+    description: '50,000+ vehicle history reports delivered. US-based team, NMVTIS data, 30-day money-back guarantee. Learn who we are.',
+    url: 'https://ridechecks.us/about',
+    images: [{ url: 'https://ridechecks.us/og-image.png', width: 1200, height: 630 }],
+  },
 }
 
 const STATS = [

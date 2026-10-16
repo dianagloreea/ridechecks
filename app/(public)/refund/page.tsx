@@ -3,13 +3,18 @@ import { ShieldCheck, Clock, Mail, ArrowRight } from 'lucide-react'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Refund Policy — 30-Day Money-Back Guarantee',
-  description: 'RideChecks offers a 30-day money-back guarantee on all vehicle history reports. Learn how to request a refund and what qualifies.',
+  title: 'Refund Policy — 30-Day Money-Back Guarantee | RideChecks',
+  description: 'RideChecks offers a full 30-day money-back guarantee on all vehicle history reports. No questions asked. Email support@ridechecks.us and we\'ll process your refund within 1–2 business days.',
+  keywords: [
+    'vehicle history report refund', 'VIN check refund policy', 'RideChecks refund',
+    'money back guarantee vehicle report', '30 day refund car report',
+  ],
   alternates: { canonical: 'https://ridechecks.us/refund' },
   openGraph: {
-    title: 'Refund Policy — RideChecks 30-Day Guarantee',
-    description: 'Not satisfied with your vehicle history report? We offer a full refund within 30 days of purchase, no questions asked.',
+    title: '30-Day Money-Back Guarantee — RideChecks Refund Policy',
+    description: 'Not satisfied? Get a full refund within 30 days, no questions asked. We process refunds within 1–2 business days.',
     url: 'https://ridechecks.us/refund',
+    images: [{ url: 'https://ridechecks.us/og-image.png', width: 1200, height: 630 }],
   },
 }
 

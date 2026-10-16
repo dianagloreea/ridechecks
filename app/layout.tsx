@@ -23,33 +23,48 @@ const BASE_URL = 'https://ridechecks.us'
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: 'RideChecks — Vehicle History Reports | VIN Check USA',
+    default: 'RideChecks — Free VIN Check & Vehicle History Reports USA',
     template: '%s | RideChecks',
   },
-  description: 'Run a VIN check and get a detailed vehicle history report in minutes. Accident records, title issues, odometer fraud, recalls & more. Trusted by thousands of US car buyers.',
-  keywords: ['VIN check', 'vehicle history report', 'car history report', 'VIN lookup', 'used car check', 'carfax alternative', 'vehicle history check', 'VIN number check', 'car accident history', 'title check'],
+  description: 'Run a free VIN check instantly. Get a full vehicle history report — accident records, title issues, odometer fraud, theft records, recalls & ownership history. Trusted by US car buyers.',
+  keywords: [
+    'VIN check', 'free VIN check', 'vehicle history report', 'car history report',
+    'VIN lookup', 'used car check', 'carfax alternative', 'vehicle history check',
+    'VIN number check', 'car accident history', 'title check', 'run VIN check',
+    'check car history', 'vehicle report', 'auto history report', 'salvage title check',
+    'odometer fraud check', 'car theft check', 'VIN decoder', 'NMVTIS report',
+  ],
   authors: [{ name: 'RideChecks', url: BASE_URL }],
   creator: 'RideChecks',
   publisher: 'RideChecks',
+  category: 'automotive',
   robots: {
     index: true,
     follow: true,
-    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
+    nocache: false,
+    googleBot: {
+      index: true,
+      follow: true,
+      noimageindex: false,
+      'max-video-preview': -1,
+      'max-image-preview': 'large',
+      'max-snippet': -1,
+    },
   },
   openGraph: {
     type: 'website',
     locale: 'en_US',
     url: BASE_URL,
     siteName: 'RideChecks',
-    title: 'RideChecks — Vehicle History Reports | VIN Check USA',
-    description: 'Run a VIN check and get a detailed vehicle history report in minutes. Accident records, title issues, odometer fraud, recalls & more.',
-    images: [{ url: '/og-image.png', width: 1200, height: 630, alt: 'RideChecks — Vehicle History Reports' }],
+    title: 'RideChecks — Free VIN Check & Vehicle History Reports USA',
+    description: 'Run a free VIN check and get a full vehicle history report — accident records, title issues, odometer fraud, theft records & more. Instant results.',
+    images: [{ url: `${BASE_URL}/og-image.png`, width: 1200, height: 630, alt: 'RideChecks — Vehicle History Reports & VIN Check' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'RideChecks — Vehicle History Reports | VIN Check USA',
-    description: 'Run a VIN check and get a detailed vehicle history report in minutes.',
-    images: ['/og-image.png'],
+    title: 'RideChecks — Free VIN Check & Vehicle History Reports',
+    description: 'Run a free VIN check and get a full vehicle history report instantly. Accident history, title check, odometer fraud & more.',
+    images: [`${BASE_URL}/og-image.png`],
   },
   icons: {
     icon: [
@@ -73,9 +88,17 @@ const organizationSchema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   name: 'RideChecks',
+  alternateName: 'RideChecks Vehicle History Reports',
   url: 'https://ridechecks.us',
-  logo: 'https://ridechecks.us/logo.png',
-  description: 'Professional vehicle history report service for US car buyers.',
+  logo: {
+    '@type': 'ImageObject',
+    url: 'https://ridechecks.us/logo.png',
+    width: 512,
+    height: 512,
+  },
+  image: 'https://ridechecks.us/og-image.png',
+  description: 'RideChecks provides instant vehicle history reports and VIN checks for US car buyers. Access accident records, title history, odometer readings, theft records, and recall information.',
+  foundingDate: '2024',
   address: {
     '@type': 'PostalAddress',
     streetAddress: '30 N Gould St',
@@ -84,12 +107,28 @@ const organizationSchema = {
     postalCode: '82801',
     addressCountry: 'US',
   },
-  contactPoint: {
-    '@type': 'ContactPoint',
-    email: 'support@ridechecks.us',
-    contactType: 'customer support',
-    availableLanguage: 'English',
-    hoursAvailable: 'Mo-Su 08:00-22:00',
+  contactPoint: [
+    {
+      '@type': 'ContactPoint',
+      email: 'support@ridechecks.us',
+      contactType: 'customer support',
+      availableLanguage: 'English',
+      hoursAvailable: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday'],
+        opens: '08:00',
+        closes: '22:00',
+      },
+    },
+  ],
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Vehicle History Report Plans',
+    itemListElement: [
+      { '@type': 'Offer', name: 'Standard Report', price: '29.99', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'Professional Report', price: '44.99', priceCurrency: 'USD' },
+      { '@type': 'Offer', name: 'Instant Report', price: '59.99', priceCurrency: 'USD' },
+    ],
   },
   sameAs: [],
 }
@@ -98,11 +137,42 @@ const websiteSchema = {
   '@context': 'https://schema.org',
   '@type': 'WebSite',
   name: 'RideChecks',
+  alternateName: 'RideChecks VIN Check',
   url: 'https://ridechecks.us',
+  description: 'Free VIN check and vehicle history reports for US car buyers.',
   potentialAction: {
     '@type': 'SearchAction',
-    target: 'https://ridechecks.us/vin-check?vin={search_term_string}',
+    target: {
+      '@type': 'EntryPoint',
+      urlTemplate: 'https://ridechecks.us/vin-check?vin={search_term_string}',
+    },
     'query-input': 'required name=search_term_string',
+  },
+}
+
+const serviceSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Service',
+  name: 'Vehicle History Report',
+  alternateName: 'VIN Check',
+  provider: { '@type': 'Organization', name: 'RideChecks', url: 'https://ridechecks.us' },
+  description: 'Comprehensive vehicle history reports including accident records, title checks, odometer fraud detection, theft records, recall information, and ownership history.',
+  serviceType: 'Vehicle History Report',
+  areaServed: { '@type': 'Country', name: 'United States' },
+  url: 'https://ridechecks.us/vin-check',
+  offers: {
+    '@type': 'AggregateOffer',
+    lowPrice: '29.99',
+    highPrice: '59.99',
+    priceCurrency: 'USD',
+    offerCount: 3,
+  },
+  aggregateRating: {
+    '@type': 'AggregateRating',
+    ratingValue: '4.8',
+    reviewCount: '1247',
+    bestRating: '5',
+    worstRating: '1',
   },
 }
 
@@ -110,14 +180,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en" className={`${playfair.variable} ${dmSans.variable}`}>
       <head>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
-        />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
-        />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
       </head>
       <body>
         <ThemeProvider>

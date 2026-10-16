@@ -3,13 +3,25 @@ import { FAQ_ITEMS } from '@/lib/types'
 import FaqSection from '@/components/FaqSection'
 
 export const metadata: Metadata = {
-  title: 'FAQ — Frequently Asked Questions About VIN Checks',
-  description: 'Answers to the most common questions about RideChecks vehicle history reports — what a VIN check includes, how long it takes, accuracy, and refund policy.',
+  title: 'FAQ — VIN Check & Vehicle History Report Questions Answered',
+  description: 'Get answers to common questions about RideChecks VIN checks and vehicle history reports — what\'s included, how long reports take, accuracy, pricing, and refund policy.',
+  keywords: [
+    'VIN check FAQ', 'vehicle history report questions', 'what does VIN check show',
+    'how long does vehicle history report take', 'is VIN check accurate',
+    'vehicle report refund', 'RideChecks FAQ', 'car history report help',
+    'VIN check questions', 'what is included in vehicle history report',
+  ],
   alternates: { canonical: 'https://ridechecks.us/faq' },
   openGraph: {
-    title: 'FAQ — RideChecks Vehicle History Reports',
-    description: 'Answers to common questions about VIN checks, vehicle history reports, delivery times, accuracy, and refunds.',
+    title: 'FAQ — VIN Check & Vehicle History Report Questions | RideChecks',
+    description: 'Answers to common questions about VIN checks, vehicle history reports, delivery times, accuracy, and our 30-day refund policy.',
     url: 'https://ridechecks.us/faq',
+    images: [{ url: 'https://ridechecks.us/og-image.png', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FAQ — VIN Check & Vehicle History Report Questions',
+    description: 'Everything you need to know about RideChecks VIN checks, reports, accuracy, and refunds.',
   },
 }
 
