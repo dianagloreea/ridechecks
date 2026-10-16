@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import Image from 'next/image'
 import { useState } from 'react'
 import { Menu, X } from 'lucide-react'
 import ThemeToggle from '@/components/ThemeToggle'
@@ -13,7 +12,11 @@ export default function Navbar() {
       <div className="max-w-6xl mx-auto px-4 h-16 flex items-center justify-between">
         <Link href="/" className="flex items-center">
           <div className="flex items-center gap-1">
-            <Image src="/favicon-icon.ico" alt="RideChecks" width={42} height={42} className="object-contain" />
+            <svg width="48" height="48" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" aria-label="RideChecks">
+              <circle cx="40" cy="40" r="30" stroke="#c4953a" strokeWidth="8" fill="none"/>
+              <path d="M26 40 L36 52 L56 26" stroke="#c4953a" strokeWidth="8" strokeLinecap="round" strokeLinejoin="round"/>
+              <line x1="63" y1="63" x2="86" y2="86" stroke="#c4953a" strokeWidth="10" strokeLinecap="round"/>
+            </svg>
             <span className="font-black text-xl tracking-tight">
               <span className="text-slate-900 dark:text-white">Ride</span><span className="text-[#c4953a]">Checks</span>
             </span>
