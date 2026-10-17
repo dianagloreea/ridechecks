@@ -34,6 +34,9 @@ export default function PayPalButton({ amount, packageName, onSuccess, onError }
           createOrder={(_data, actions) =>
             actions.order.create({
               intent: 'CAPTURE',
+              application_context: {
+                shipping_preference: 'NO_SHIPPING',
+              },
               purchase_units: [{
                 amount: { currency_code: 'USD', value: amount.toFixed(2) },
                 description: `RideChecks ${packageName} Report`,
