@@ -191,6 +191,11 @@ function VinCheckInner() {
   }
 
   const handleSelectPackage = (pkgId: string) => {
+    if (!submittedVin || submittedVin.length !== 17) {
+      document.getElementById('vin-input')?.focus()
+      document.getElementById('vin-input')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+      return
+    }
     setSelectedPkg(pkgId)
     setStep('payment')
     setTimeout(() => document.getElementById('checkout-section')?.scrollIntoView({ behavior: 'smooth' }), 100)
@@ -232,6 +237,7 @@ function VinCheckInner() {
           <div className="max-w-xl mx-auto">
             <form onSubmit={handleVinSubmit} className="flex flex-col sm:flex-row gap-2">
               <input
+                id="vin-input"
                 type="text"
                 placeholder="Enter VIN number (e.g. 1HGBH41JXMN109186)"
                 value={vin}
@@ -301,11 +307,17 @@ function VinCheckInner() {
             VIN: <span className="font-mono font-semibold text-slate-800 dark:text-white">{submittedVin}</span>
           </p>
         )}
+        {!submittedVin && (
+          <div className="mb-6 flex items-center gap-2 bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-700/40 rounded-xl px-4 py-3 text-sm text-amber-700 dark:text-amber-400">
+            <ArrowRight size={14} className="shrink-0" />
+            Please enter your VIN above before selecting a package.
+          </div>
+        )}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {PACKAGES.map(p => (
             <div
               key={p.id}
-              className={`relative border rounded-2xl p-6 cursor-pointer transition-all bg-white dark:bg-[#0e1628] ${
+              className={`relative border rounded-2xl p-6 transition-all bg-white dark:bg-[#0e1628] ${!submittedVin ? 'opacity-60 cursor-not-allowed' : 'cursor-pointer'} ${
                 selectedPkg === p.id
                   ? 'border-[#c4953a] ring-2 ring-[#c4953a]/20 shadow-md'
                   : p.highlight
