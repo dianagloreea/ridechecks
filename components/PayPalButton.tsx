@@ -4,6 +4,8 @@ import {
   PayPalScriptProvider,
   PayPalHostedFieldsProvider,
   PayPalHostedField,
+  PayPalButtons,
+  FUNDING,
   usePayPalHostedFields,
 } from '@paypal/react-paypal-js'
 import { ShieldCheck, Lock } from 'lucide-react'
@@ -15,7 +17,7 @@ interface Props {
   onError?: (err: unknown) => void
 }
 
-function CardForm({ amount, packageName, onSuccess, onError }: Props) {
+function CardForm({ amount, onSuccess, onError }: Props) {
   const hostedFields = usePayPalHostedFields()
   const [paying, setPaying] = useState(false)
   const [cardError, setCardError] = useState('')
@@ -27,15 +29,10 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
     try {
       const order = await hostedFields.cardFields.submit({
         cardholderName: (document.getElementById('cardholder-name') as HTMLInputElement)?.value || '',
-        billingAddress: {
-          countryCodeAlpha2: 'US',
-        },
+        billingAddress: { countryCodeAlpha2: 'US' },
       })
-      if (order) {
-        onSuccess()
-      }
+      if (order) onSuccess()
     } catch (err: unknown) {
-      console.error('PayPal card error:', err)
       const msg = err instanceof Error ? err.message : 'Payment failed. Please check your card details and try again.'
       setCardError(msg)
       onError?.(err)
@@ -44,10 +41,8 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
     }
   }
 
-
   return (
     <div className="space-y-3">
-      {/* Cardholder name */}
       <div>
         <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Name on card</label>
         <input
@@ -58,41 +53,24 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
         />
       </div>
 
-      {/* Card number */}
       <div>
         <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Card number</label>
         <div className="h-11 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0e1628] flex items-center overflow-hidden focus-within:ring-2 focus-within:ring-[#c4953a]/50 focus-within:border-[#c4953a]">
-          <PayPalHostedField
-            id="card-number"
-            hostedFieldType="number"
-            options={{ selector: '#card-number', placeholder: '1234 5678 9012 3456' }}
-            className="w-full h-full"
-          />
+          <PayPalHostedField id="card-number" hostedFieldType="number" options={{ selector: '#card-number', placeholder: '1234 5678 9012 3456' }} className="w-full h-full" />
         </div>
       </div>
 
-      {/* Expiry + CVV */}
       <div className="grid grid-cols-2 gap-3">
         <div>
           <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">Expiry date</label>
           <div className="h-11 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0e1628] flex items-center overflow-hidden focus-within:ring-2 focus-within:ring-[#c4953a]/50 focus-within:border-[#c4953a]">
-            <PayPalHostedField
-              id="expiration-date"
-              hostedFieldType="expirationDate"
-              options={{ selector: '#expiration-date', placeholder: 'MM / YY' }}
-              className="w-full h-full"
-            />
+            <PayPalHostedField id="expiration-date" hostedFieldType="expirationDate" options={{ selector: '#expiration-date', placeholder: 'MM / YY' }} className="w-full h-full" />
           </div>
         </div>
         <div>
           <label className="block text-xs font-semibold text-slate-600 dark:text-slate-400 mb-1">CVV</label>
           <div className="h-11 rounded-lg border border-slate-200 dark:border-white/10 bg-white dark:bg-[#0e1628] flex items-center overflow-hidden focus-within:ring-2 focus-within:ring-[#c4953a]/50 focus-within:border-[#c4953a]">
-            <PayPalHostedField
-              id="cvv"
-              hostedFieldType="cvv"
-              options={{ selector: '#cvv', placeholder: '123' }}
-              className="w-full h-full"
-            />
+            <PayPalHostedField id="cvv" hostedFieldType="cvv" options={{ selector: '#cvv', placeholder: '123' }} className="w-full h-full" />
           </div>
         </div>
       </div>
@@ -111,8 +89,8 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
         {paying ? (
           <>
             <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/>
-              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z"/>
+              <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
+              <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8z" />
             </svg>
             Processing…
           </>
@@ -132,61 +110,16 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
   )
 }
 
-export default function PayPalButton({ amount, packageName, onSuccess, onError }: Props) {
-  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
-
-  if (!clientId) {
-    return (
-      <div className="text-center text-sm text-red-500 py-4">
-        PayPal is not configured. Please add NEXT_PUBLIC_PAYPAL_CLIENT_ID.
-      </div>
-    )
-  }
-
-  return (
-    <PayPalScriptProvider options={{
-      clientId,
-      currency: 'USD',
-      intent: 'capture',
-      components: 'hosted-fields',
-    }}>
-      <PayPalHostedFieldsProvider
-        createOrder={() =>
-          fetch('/api/paypal/order', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ amount: amount.toFixed(2), packageName }),
-          })
-            .then(r => r.json())
-            .then(d => d.id)
-        }
-        notEligibleError={
-          <FallbackPayPalButton amount={amount} packageName={packageName} onSuccess={onSuccess} onError={onError} />
-        }
-      >
-        <CardForm amount={amount} packageName={packageName} onSuccess={onSuccess} onError={onError} />
-      </PayPalHostedFieldsProvider>
-    </PayPalScriptProvider>
-  )
-}
-
-// Fallback to standard PayPal button if hosted fields not eligible
-import { PayPalButtons, FUNDING } from '@paypal/react-paypal-js'
-
-function FallbackPayPalButton({ amount, packageName, onSuccess, onError }: Props) {
+function FallbackCardButton({ amount, packageName, onSuccess, onError }: Props) {
   return (
     <div className="space-y-3">
-      <p className="text-xs text-slate-500 text-center">Pay securely with your card via PayPal</p>
       <PayPalButtons
         style={{ layout: 'vertical', shape: 'rect', height: 48 }}
         fundingSource={FUNDING.CARD}
         createOrder={(_data, actions) =>
           actions.order.create({
             intent: 'CAPTURE',
-            purchase_units: [{
-              amount: { currency_code: 'USD', value: amount.toFixed(2) },
-              description: `RideChecks ${packageName} Report`,
-            }],
+            purchase_units: [{ amount: { currency_code: 'USD', value: amount.toFixed(2) }, description: `RideChecks ${packageName} Report` }],
           })
         }
         onApprove={async (_data, actions) => {
@@ -201,5 +134,30 @@ function FallbackPayPalButton({ amount, packageName, onSuccess, onError }: Props
         Secured by PayPal — 30-day refund policy applies.
       </p>
     </div>
+  )
+}
+
+export default function PayPalButton({ amount, packageName, onSuccess, onError }: Props) {
+  const clientId = process.env.NEXT_PUBLIC_PAYPAL_CLIENT_ID
+
+  if (!clientId) {
+    return <div className="text-center text-sm text-red-500 py-4">PayPal is not configured.</div>
+  }
+
+  return (
+    <PayPalScriptProvider options={{ clientId, currency: 'USD', intent: 'capture', components: 'hosted-fields' }}>
+      <PayPalHostedFieldsProvider
+        createOrder={() =>
+          fetch('/api/paypal/order', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ amount: amount.toFixed(2), packageName }),
+          }).then(r => r.json()).then(d => d.id)
+        }
+        notEligibleError={<FallbackCardButton amount={amount} packageName={packageName} onSuccess={onSuccess} onError={onError} />}
+      >
+        <CardForm amount={amount} packageName={packageName} onSuccess={onSuccess} onError={onError} />
+      </PayPalHostedFieldsProvider>
+    </PayPalScriptProvider>
   )
 }
