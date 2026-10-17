@@ -44,17 +44,6 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
     }
   }
 
-  const fieldStyle = {
-    base: {
-      'font-size': '15px',
-      'font-family': 'system-ui, sans-serif',
-      color: '#1e293b',
-      padding: '0 12px',
-    },
-    input: { color: '#1e293b' },
-    ':focus': { color: '#080c18' },
-    '.invalid': { color: '#ef4444' },
-  }
 
   return (
     <div className="space-y-3">
@@ -76,7 +65,7 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
           <PayPalHostedField
             id="card-number"
             hostedFieldType="number"
-            options={{ selector: '#card-number', placeholder: '1234 5678 9012 3456', styles: fieldStyle }}
+            options={{ selector: '#card-number', placeholder: '1234 5678 9012 3456' }}
             className="w-full h-full"
           />
         </div>
@@ -90,7 +79,7 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
             <PayPalHostedField
               id="expiration-date"
               hostedFieldType="expirationDate"
-              options={{ selector: '#expiration-date', placeholder: 'MM / YY', styles: fieldStyle }}
+              options={{ selector: '#expiration-date', placeholder: 'MM / YY' }}
               className="w-full h-full"
             />
           </div>
@@ -101,7 +90,7 @@ function CardForm({ amount, packageName, onSuccess, onError }: Props) {
             <PayPalHostedField
               id="cvv"
               hostedFieldType="cvv"
-              options={{ selector: '#cvv', placeholder: '123', styles: fieldStyle }}
+              options={{ selector: '#cvv', placeholder: '123' }}
               className="w-full h-full"
             />
           </div>
