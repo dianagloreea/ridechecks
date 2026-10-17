@@ -63,8 +63,13 @@ function OrderDetailsForm({ vin, pkg, onSuccess }: { vin: string, pkg: typeof PA
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setLoading(true)
     setError('')
+
+    if (!form.full_name.trim()) { setError('Please enter your full name.'); return }
+    if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError('Please enter a valid email address.'); return }
+    if (!form.phone.trim() || form.phone.trim().length < 7) { setError('Please enter a valid phone number.'); return }
+
+    setLoading(true)
 
     try {
       const res = await fetch('/api/orders', {
