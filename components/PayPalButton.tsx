@@ -26,6 +26,8 @@ export default function PayPalButton({ amount, packageName, onSuccess, onError }
       currency: 'USD',
       intent: 'capture',
       components: 'buttons',
+      'enable-funding': 'card',
+      'disable-funding': 'paypal,paylater,venmo,credit',
     }}>
       <div className="space-y-3">
         <PayPalButtons
