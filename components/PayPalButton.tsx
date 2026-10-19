@@ -26,13 +26,12 @@ export default function PayPalButton({ amount, packageName, onSuccess, onError }
       currency: 'USD',
       intent: 'capture',
       components: 'buttons',
-      'enable-funding': 'card',
-      'disable-funding': 'paypal,paylater,venmo,credit',
+      'disable-funding': 'paylater,venmo,credit',
     }}>
       <div className="space-y-3">
         <PayPalButtons
           style={{ layout: 'vertical', shape: 'rect', height: 48, label: 'pay' }}
-          fundingSource={FUNDING.CARD}
+          fundingSource={undefined}
           createOrder={(_data, actions) =>
             actions.order.create({
               intent: 'CAPTURE',
