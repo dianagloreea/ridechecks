@@ -4,7 +4,7 @@ import { useSearchParams } from 'next/navigation'
 import { Check, MapPin, Car, Key, ArrowRight, ShieldCheck, Lock, Loader2, CheckCircle } from 'lucide-react'
 import { PACKAGES } from '@/lib/types'
 import FaqSection from '@/components/FaqSection'
-import PayPalButton from '@/components/PayPalButton'
+import StripePaymentForm from '@/components/StripePaymentForm'
 import toast from 'react-hot-toast'
 
 type Step = 'vin' | 'packages' | 'payment' | 'details' | 'success'
@@ -43,14 +43,14 @@ function PaymentStep({ pkg, onSuccess }: { pkg: typeof PACKAGES[0], onSuccess: (
         </div>
       </div>
 
-      <PayPalButton
+      <StripePaymentForm
         amount={pkg.price}
         packageName={pkg.name}
         onSuccess={() => {
           toast.success('Payment confirmed!')
           onSuccess()
         }}
-        onError={() => toast.error('Payment failed. Please try again.')}
+        onError={(msg) => toast.error(msg || 'Payment failed. Please try again.')}
       />
     </div>
   )
