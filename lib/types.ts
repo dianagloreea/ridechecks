@@ -21,7 +21,7 @@ export const PACKAGES = [
   {
     id: 'essential',
     name: 'Essential',
-    price: 0.52,
+    price: 44.99,
     delivery: '1–2 hours',
     features: [
       'VIN Decoder',
@@ -37,7 +37,7 @@ export const PACKAGES = [
   {
     id: 'instant',
     name: 'Instant',
-    price: 1.09,
+    price: 49.99,
     delivery: '30 minutes',
     features: [
       'Everything in Essential, plus:',
@@ -55,7 +55,7 @@ export const PACKAGES = [
   {
     id: 'premium',
     name: 'Premium',
-    price: 1.99,
+    price: 59.99,
     delivery: '30 minutes',
     features: [
       'Everything in Instant, plus:',
