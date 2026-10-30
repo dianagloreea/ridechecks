@@ -7,7 +7,7 @@ import FaqSection from '@/components/FaqSection'
 import StripePaymentForm from '@/components/StripePaymentForm'
 import toast from 'react-hot-toast'
 
-type Step = 'vin' | 'packages' | 'payment' | 'details' | 'success'
+type Step = 'vin' | 'packages' | 'details' | 'payment' | 'success'
 
 const VIN_LOCATIONS = [
   { icon: Car, title: 'Windshield plate', desc: 'Stand outside the car and look at the lower corner of the windshield on the driver\'s side.' },
@@ -25,88 +25,35 @@ const VIN_ANATOMY = [
   { chars: '12–17', label: 'Serial number', desc: 'Unique production sequence' },
 ]
 
-function PaymentStep({ pkg, onSuccess }: { pkg: typeof PACKAGES[0], onSuccess: () => void }) {
-  return (
-    <div className="max-w-md mx-auto bg-white dark:bg-[#0e1628] border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-5">
-        <Lock size={16} className="text-[#c4953a]" />
-        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Secure Payment — SSL Encrypted</span>
-      </div>
-
-      <div className="bg-[#faf8f4] dark:bg-white/5 border border-[#c4953a]/20 rounded-xl p-4 mb-5">
-        <div className="flex justify-between items-center">
-          <div>
-            <p className="font-semibold text-slate-900 dark:text-white">{pkg.name} Report</p>
-            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Delivered in {pkg.delivery}</p>
-          </div>
-          <span className="text-2xl font-bold text-slate-900 dark:text-white">${pkg.price}</span>
-        </div>
-      </div>
-
-      <StripePaymentForm
-        amount={pkg.price}
-        packageName={pkg.name}
-        vin={vin}
-        onSuccess={() => {
-          toast.success('Payment confirmed!')
-          onSuccess()
-        }}
-        onError={(msg) => toast.error(msg || 'Payment failed. Please try again.')}
-      />
-    </div>
-  )
+interface CustomerDetails {
+  full_name: string
+  email: string
+  phone: string
 }
 
-function OrderDetailsForm({ vin, pkg, onSuccess }: { vin: string, pkg: typeof PACKAGES[0], onSuccess: (email: string, name: string) => void }) {
-  const [form, setForm] = useState({ full_name: '', email: '', phone: '' })
-  const [loading, setLoading] = useState(false)
+function DetailsForm({
+  vin,
+  pkg,
+  onNext,
+}: {
+  vin: string
+  pkg: typeof PACKAGES[0]
+  onNext: (details: CustomerDetails) => void
+}) {
+  const [form, setForm] = useState<CustomerDetails>({ full_name: '', email: '', phone: '' })
   const [error, setError] = useState('')
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     setError('')
-
     if (!form.full_name.trim()) { setError('Please enter your full name.'); return }
     if (!form.email.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(form.email)) { setError('Please enter a valid email address.'); return }
     if (!form.phone.trim() || form.phone.trim().length < 7) { setError('Please enter a valid phone number.'); return }
-
-    setLoading(true)
-
-    try {
-      const res = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          ...form,
-          vin,
-          package_name: pkg.name,
-          package_price: pkg.price,
-        }),
-      })
-
-      const data = await res.json()
-      if (!res.ok) throw new Error(data.error || 'Something went wrong')
-      toast.success('Order placed! Check your email for confirmation.')
-      onSuccess(form.email, form.full_name)
-    } catch (err: unknown) {
-      const msg = err instanceof Error ? err.message : 'Something went wrong'
-      setError(msg)
-      toast.error(msg)
-    } finally {
-      setLoading(false)
-    }
+    onNext(form)
   }
 
   return (
     <div className="max-w-md mx-auto bg-white dark:bg-[#0e1628] border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
-      <div className="flex items-center gap-2 mb-2">
-        <div className="w-7 h-7 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-          <CheckCircle size={15} className="text-green-600 dark:text-green-400" />
-        </div>
-        <span className="text-sm font-semibold text-green-700 dark:text-green-400">Payment confirmed!</span>
-      </div>
-      <p className="text-xs text-slate-500 dark:text-slate-400 mb-5">Enter your details below to receive your report.</p>
-
       <div className="bg-[#faf8f4] dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg p-3 mb-5 text-xs text-slate-600 dark:text-slate-400">
         <span className="font-semibold text-slate-800 dark:text-white">{pkg.name} Report</span>
         <span className="mx-2 text-slate-300 dark:text-white/20">·</span>
@@ -150,19 +97,74 @@ function OrderDetailsForm({ vin, pkg, onSuccess }: { vin: string, pkg: typeof PA
           />
         </div>
 
-        {error && <p className="text-xs text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2">{error}</p>}
+        {error && (
+          <p className="text-xs text-red-600 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg px-3 py-2">
+            {error}
+          </p>
+        )}
 
         <button
           type="submit"
-          disabled={loading}
-          className="w-full bg-[#c4953a] hover:bg-[#b8872e] disabled:opacity-60 text-white font-bold py-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
+          className="w-full bg-[#c4953a] hover:bg-[#b8872e] text-white font-bold py-3 rounded-lg text-sm transition-colors flex items-center justify-center gap-2"
         >
-          {loading ? <><Loader2 size={16} className="animate-spin" /> Submitting...</> : <>Submit & Receive Report <ArrowRight size={14} /></>}
+          Continue to Payment <ArrowRight size={14} />
         </button>
         <p className="text-xs text-center text-slate-400">
-          By submitting you agree to our <a href="/terms" className="underline">Terms of Service</a>
+          By continuing you agree to our <a href="/terms" className="underline">Terms of Service</a>
         </p>
       </form>
+    </div>
+  )
+}
+
+function PaymentStep({
+  vin,
+  pkg,
+  customer,
+  onSuccess,
+}: {
+  vin: string
+  pkg: typeof PACKAGES[0]
+  customer: CustomerDetails
+  onSuccess: () => void
+}) {
+  return (
+    <div className="max-w-md mx-auto bg-white dark:bg-[#0e1628] border border-slate-200 dark:border-white/10 rounded-2xl p-6 shadow-sm">
+      <div className="flex items-center gap-2 mb-5">
+        <Lock size={16} className="text-[#c4953a]" />
+        <span className="text-xs text-slate-500 dark:text-slate-400 font-medium">Secure Payment — SSL Encrypted</span>
+      </div>
+
+      <div className="bg-[#faf8f4] dark:bg-white/5 border border-[#c4953a]/20 rounded-xl p-4 mb-5">
+        <div className="flex justify-between items-center mb-2">
+          <div>
+            <p className="font-semibold text-slate-900 dark:text-white">{pkg.name} Report</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Delivered in {pkg.delivery}</p>
+          </div>
+          <span className="text-2xl font-bold text-slate-900 dark:text-white">${pkg.price}</span>
+        </div>
+        <div className="text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-white/10 pt-2 mt-2">
+          <span className="font-mono">{vin}</span>
+          <span className="mx-2">·</span>
+          <span>{customer.full_name}</span>
+          <span className="mx-2">·</span>
+          <span>{customer.email}</span>
+        </div>
+      </div>
+
+      <StripePaymentForm
+        amount={pkg.price}
+        packageName={pkg.name}
+        vin={vin}
+        fullName={customer.full_name}
+        email={customer.email}
+        phone={customer.phone}
+        onSuccess={() => {
+          toast.success('Payment confirmed!')
+          onSuccess()
+        }}
+        onError={(msg) => toast.error(msg || 'Payment failed. Please try again.')}
+      />
     </div>
   )
 }
@@ -173,8 +175,7 @@ function VinCheckInner() {
   const [submittedVin, setSubmittedVin] = useState(searchParams.get('vin') || '')
   const [selectedPkg, setSelectedPkg] = useState<string | null>(null)
   const [step, setStep] = useState<Step>(searchParams.get('vin') ? 'packages' : 'vin')
-  const [customerEmail, setCustomerEmail] = useState('')
-  const [customerName, setCustomerName] = useState('')
+  const [customer, setCustomer] = useState<CustomerDetails | null>(null)
 
   useEffect(() => {
     const v = searchParams.get('vin')
@@ -198,18 +199,34 @@ function VinCheckInner() {
       return
     }
     setSelectedPkg(pkgId)
-    setStep('payment')
-    setTimeout(() => document.getElementById('checkout-section')?.scrollIntoView({ behavior: 'smooth' }), 100)
-  }
-
-  const handlePaymentSuccess = () => {
     setStep('details')
     setTimeout(() => document.getElementById('checkout-section')?.scrollIntoView({ behavior: 'smooth' }), 100)
   }
 
-  const handleOrderSuccess = (email: string, name: string) => {
-    setCustomerEmail(email)
-    setCustomerName(name)
+  const handleDetailsNext = (details: CustomerDetails) => {
+    setCustomer(details)
+    setStep('payment')
+    setTimeout(() => document.getElementById('checkout-section')?.scrollIntoView({ behavior: 'smooth' }), 100)
+  }
+
+  const handlePaymentSuccess = async () => {
+    if (!customer || !pkg) return
+    try {
+      await fetch('/api/orders', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          full_name: customer.full_name,
+          email: customer.email,
+          phone: customer.phone,
+          vin: submittedVin,
+          package_name: pkg.name,
+          package_price: pkg.price,
+        }),
+      })
+    } catch {
+      // webhook will handle it if this fails
+    }
     setStep('success')
     setTimeout(() => document.getElementById('checkout-section')?.scrollIntoView({ behavior: 'smooth' }), 100)
   }
@@ -218,8 +235,8 @@ function VinCheckInner() {
 
   const STEPS = [
     { key: 'packages', label: 'Select Package' },
-    { key: 'payment', label: 'Payment' },
     { key: 'details', label: 'Your Details' },
+    { key: 'payment', label: 'Payment' },
     { key: 'success', label: 'Confirmation' },
   ]
 
@@ -348,7 +365,7 @@ function VinCheckInner() {
                     : 'bg-slate-100 dark:bg-white/5 hover:bg-[#c4953a]/10 hover:text-[#c4953a] text-slate-800 dark:text-slate-200 border border-transparent hover:border-[#c4953a]/30'
                 }`}
               >
-                {selectedPkg === p.id ? 'Selected' : 'Select & Pay'}
+                {selectedPkg === p.id ? 'Selected' : 'Select Package'}
               </button>
             </div>
           ))}
@@ -356,7 +373,7 @@ function VinCheckInner() {
       </section>
 
       {/* Checkout section */}
-      {(step === 'payment' || step === 'details' || step === 'success') && pkg && (
+      {(step === 'details' || step === 'payment' || step === 'success') && pkg && (
         <section id="checkout-section" className="max-w-6xl mx-auto px-4 pb-20">
           {step !== 'success' && (
             <div className="flex items-start justify-center mb-8 w-full max-w-lg mx-auto">
@@ -380,12 +397,12 @@ function VinCheckInner() {
             </div>
           )}
 
-          {step === 'payment' && (
-            <PaymentStep pkg={pkg} onSuccess={handlePaymentSuccess} />
+          {step === 'details' && (
+            <DetailsForm vin={submittedVin} pkg={pkg} onNext={handleDetailsNext} />
           )}
 
-          {step === 'details' && (
-            <OrderDetailsForm vin={submittedVin} pkg={pkg} onSuccess={handleOrderSuccess} />
+          {step === 'payment' && customer && (
+            <PaymentStep vin={submittedVin} pkg={pkg} customer={customer} onSuccess={handlePaymentSuccess} />
           )}
 
           {step === 'success' && (
@@ -395,11 +412,11 @@ function VinCheckInner() {
               </div>
               <h3 className="font-bold text-slate-900 dark:text-white text-xl mb-2">Order Placed Successfully!</h3>
               <p className="text-sm text-slate-600 dark:text-slate-400 mb-1">
-                Hi <strong>{customerName}</strong>, we've received your order for the <strong>{pkg.name}</strong> report.
+                Hi <strong>{customer?.full_name}</strong>, we've received your order for the <strong>{pkg.name}</strong> report.
               </p>
               <p className="text-sm text-slate-500 dark:text-slate-400 mb-1">VIN: <span className="font-mono font-semibold text-slate-800 dark:text-white">{submittedVin}</span></p>
               <p className="text-sm text-slate-500 dark:text-slate-400 mt-3">
-                A confirmation email has been sent to <strong>{customerEmail}</strong>.<br />
+                A confirmation email has been sent to <strong>{customer?.email}</strong>.<br />
                 Your report will be delivered in <strong>{pkg.delivery}</strong>.
               </p>
               <div className="mt-6 p-3 bg-white dark:bg-white/5 border border-slate-200 dark:border-white/10 rounded-lg text-xs text-slate-500 dark:text-slate-400">
