@@ -76,7 +76,7 @@ export async function POST(req: NextRequest) {
         .select()
         .single()
 
-      if (dbError) throw dbError
+      if (dbError) throw new Error(`DB error: ${dbError.message} (code: ${dbError.code})`)
 
       // Confirmation email to customer
       await resend.emails.send({

@@ -69,6 +69,11 @@ function CheckoutForm({ onSuccess, onError }: CheckoutFormProps) {
           layout: 'tabs',
           paymentMethodOrder: ['card'],
           wallets: { applePay: 'never', googlePay: 'never' },
+          fields: {
+            billingDetails: {
+              address: { country: 'never' },
+            },
+          },
         }}
       />
 
@@ -198,6 +203,7 @@ export default function StripePaymentForm({
             borderRadius: '8px',
           },
         },
+        paymentMethodTypes: ['card'],
       }}
     >
       <CheckoutForm onSuccess={onSuccess} onError={onError} />

@@ -50,20 +50,18 @@ export async function POST(req: NextRequest) {
       .select()
       .single()
 
-    if (dbError) throw dbError
+    if (dbError) throw new Error(`DB error: ${dbError.message} (code: ${dbError.code})`)
+
 
     // Confirmation email to customer
-    await resend.emails.send({
+    const { error: emailError } = await resend.emails.send({
       from: 'RideChecks <noreply@ridechecks.us>',
       to: email,
       subject: `Your RideChecks Order Confirmation — ${package_name} Report`,
       html: `
         <div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;max-width:520px;margin:0 auto;padding:0;background:#ffffff;">
           <div style="background:#080c18;padding:24px 32px;border-radius:12px 12px 0 0;">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <img src="https://ridechecks.us/logo.png" alt="RideChecks" width="36" height="36" style="display:block;border-radius:4px;" />
-              <span style="color:white;font-weight:700;font-size:18px;">Ride<span style="color:#c4953a;">Checks</span></span>
-            </div>
+            <span style="color:white;font-weight:700;font-size:18px;">Ride<span style="color:#c4953a;">Checks</span></span>
           </div>
           <div style="padding:32px;background:#faf8f4;border:1px solid #e5e7eb;border-top:none;border-radius:0 0 12px 12px;">
             <h2 style="color:#0f172a;margin:0 0 8px;font-size:22px;">Order Received!</h2>
@@ -82,9 +80,10 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     })
+    if (emailError) console.error('Customer email failed:', emailError)
 
     // Notification email to admin
-    await resend.emails.send({
+    const { error: adminEmailError } = await resend.emails.send({
       from: 'RideChecks <noreply@ridechecks.us>',
       to: process.env.ADMIN_EMAIL!,
       subject: `New Order — ${package_name} — VIN: ${vin.trim().toUpperCase()}`,
@@ -103,6 +102,8 @@ export async function POST(req: NextRequest) {
         </div>
       `,
     })
+
+    if (adminEmailError) console.error('Admin email failed:', adminEmailError)
 
     return NextResponse.json({ success: true, orderId: order.id })
   } catch (err) {
