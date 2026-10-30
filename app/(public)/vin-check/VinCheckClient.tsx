@@ -143,12 +143,9 @@ function PaymentStep({
           </div>
           <span className="text-2xl font-bold text-slate-900 dark:text-white">${pkg.price}</span>
         </div>
-        <div className="text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-white/10 pt-2 mt-2">
-          <span className="font-mono">{vin}</span>
-          <span className="mx-2">·</span>
-          <span>{customer.full_name}</span>
-          <span className="mx-2">·</span>
-          <span>{customer.email}</span>
+        <div className="text-xs text-slate-500 dark:text-slate-400 border-t border-slate-200 dark:border-white/10 pt-2 mt-2 space-y-0.5">
+          <p className="font-mono truncate">{vin}</p>
+          <p className="truncate">{customer.full_name} · <span className="break-all">{customer.email}</span></p>
         </div>
       </div>
 
