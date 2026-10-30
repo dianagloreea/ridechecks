@@ -35,8 +35,9 @@ export async function POST(req: NextRequest) {
     })
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret })
-  } catch (err) {
-    console.error('Stripe error:', err)
-    return NextResponse.json({ error: 'Failed to create payment intent' }, { status: 500 })
+  } catch (err: unknown) {
+    const msg = err instanceof Error ? err.message : JSON.stringify(err)
+    console.error('Stripe error:', msg)
+    return NextResponse.json({ error: 'Failed to create payment intent', detail: msg }, { status: 500 })
   }
 }
