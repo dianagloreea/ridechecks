@@ -203,7 +203,6 @@ export default function StripePaymentForm({
             borderRadius: '8px',
           },
         },
-        paymentMethodTypes: ['card'],
       }}
     >
       <CheckoutForm onSuccess={onSuccess} onError={onError} />
