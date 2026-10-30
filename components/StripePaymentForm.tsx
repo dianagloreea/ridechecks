@@ -69,11 +69,6 @@ function CheckoutForm({ onSuccess, onError }: CheckoutFormProps) {
           layout: 'tabs',
           paymentMethodOrder: ['card'],
           wallets: { applePay: 'never', googlePay: 'never' },
-          fields: {
-            billingDetails: {
-              address: { country: 'never' },
-            },
-          },
         }}
       />
 
