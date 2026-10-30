@@ -100,6 +100,10 @@ function CheckoutForm({ onSuccess, onError }: CheckoutFormProps) {
 interface StripePaymentFormProps {
   amount: number
   packageName: string
+  vin?: string
+  fullName?: string
+  email?: string
+  phone?: string
   onSuccess: () => void
   onError?: (msg: string) => void
 }
@@ -107,6 +111,10 @@ interface StripePaymentFormProps {
 export default function StripePaymentForm({
   amount,
   packageName,
+  vin,
+  fullName,
+  email,
+  phone,
   onSuccess,
   onError,
 }: StripePaymentFormProps) {
@@ -124,7 +132,7 @@ export default function StripePaymentForm({
       const res = await fetch('/api/stripe/create-payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ amount, packageName }),
+        body: JSON.stringify({ amount, packageName, vin, full_name: fullName, email, phone }),
       })
       const data = await res.json()
       if (!res.ok) throw new Error(data.error || 'Failed to initialize payment')

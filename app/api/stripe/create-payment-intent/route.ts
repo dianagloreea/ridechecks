@@ -9,7 +9,7 @@ function getStripe() {
 
 export async function POST(req: NextRequest) {
   try {
-    const { amount, packageName } = await req.json()
+    const { amount, packageName, vin, full_name, email, phone } = await req.json()
 
     if (!amount || isNaN(Number(amount)) || Number(amount) <= 0) {
       return NextResponse.json({ error: 'Invalid amount' }, { status: 400 })
@@ -20,11 +20,18 @@ export async function POST(req: NextRequest) {
 
     const stripe = getStripe()
 
+    const metadata: Record<string, string> = { package_name: packageName }
+    if (vin) metadata.vin = String(vin).toUpperCase()
+    if (full_name) metadata.full_name = String(full_name)
+    if (email) metadata.email = String(email)
+    if (phone) metadata.phone = String(phone)
+
     const paymentIntent = await stripe.paymentIntents.create({
-      amount: Math.round(Number(amount) * 100), // convert to cents
+      amount: Math.round(Number(amount) * 100),
       currency: 'usd',
       description: `RideChecks ${packageName} Report`,
       automatic_payment_methods: { enabled: true },
+      metadata,
     })
 
     return NextResponse.json({ clientSecret: paymentIntent.client_secret })

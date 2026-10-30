@@ -46,6 +46,7 @@ function PaymentStep({ pkg, onSuccess }: { pkg: typeof PACKAGES[0], onSuccess: (
       <StripePaymentForm
         amount={pkg.price}
         packageName={pkg.name}
+        vin={vin}
         onSuccess={() => {
           toast.success('Payment confirmed!')
           onSuccess()
