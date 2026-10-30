@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
       amount: Math.round(Number(amount) * 100),
       currency: 'usd',
       description: `RideChecks ${packageName} Report`,
-      payment_method_types: ['card'],
+      automatic_payment_methods: { enabled: true, allow_redirects: 'never' },
       metadata,
     })
 
